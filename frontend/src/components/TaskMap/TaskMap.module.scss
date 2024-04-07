@@ -1,0 +1,81 @@
+@import "../../variables.scss";
+
+.taskMap {
+   background-color: #252525;
+
+   &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px;
+      height: 80px;
+
+      &__title {
+         color: #E7E5E5;
+         font-size: 35px;
+         font-weight: bold;
+      }
+
+      &__icon {
+         color: #E7E5E5;
+         font-size: 30px;
+         font-weight: bold;
+         cursor: pointer;
+      }
+   }
+
+
+   &__list {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 15px;
+
+      &__textfield {
+         display: grid;
+         grid-template-columns: 4fr 1fr;
+         margin-bottom: 20px;
+
+         &__input {
+            all: unset;
+            width: 100%;
+            color: white;
+            background-color: transparent;
+            border: 1px solid #F8C567;
+            padding: 15px;
+            // height: 30px;
+            border-radius: 8px;
+
+            &:focus {
+               border: 2px solid $yellow;
+            }
+         }
+
+         &__btn {
+            cursor: pointer;
+            font-size: 20px;
+            background-color: #F8C567;
+            border-radius: 0px 8px 8px 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+      }
+
+      &__title {
+         color: #E7E5E5;
+         font-size: 25px;
+         font-weight: bold;
+      }
+
+      &__button {
+         cursor: pointer;
+         font-size: 18px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         border-radius: 8px;
+         padding: 15px;
+      }
+   }
+}

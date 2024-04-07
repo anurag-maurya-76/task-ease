@@ -1,0 +1,25 @@
+// Variables
+$button-color: #4CAF50;
+$button-hover-color: #45a049;
+$button-border-radius: 4px;
+$button-padding: 10px 20px;
+$button-font-size: 16px;
+$button-font-color: #fff;
+$button-border: 1px solid $button-color;
+
+.button {
+   display: inline-block;
+   padding: $button-padding;
+   border: $button-border;
+   border-radius: $button-border-radius;
+   background-color: $button-color;
+   color: $button-font-color;
+   font-size: $button-font-size;
+   text-decoration: none;
+   cursor: pointer;
+   transition: scale 0.3s;
+
+   &:hover {
+      scale: 1.05
+   }
+}

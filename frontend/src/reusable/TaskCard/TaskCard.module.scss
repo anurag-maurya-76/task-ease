@@ -1,0 +1,91 @@
+@import "../../variables.scss";
+
+.taskCard {
+   background-color: #252525;
+   border-radius: 8px;
+   padding: 20px;
+   width: 100%;
+
+   &__input {
+      border: 1px solid #555;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 16px;
+      color: #fff; // Text color for dark theme
+      background-color: #333; // Background color for dark theme
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+
+      &:focus {
+         outline: none;
+         border-color: $yellow; // Adjust focus border color for dark theme
+         box-shadow: 0 0 0 2px $yellow;
+      }
+
+   }
+
+   &__error {
+      color: red;
+      font-size: 14px;
+   }
+
+   &__header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      &__title {
+         font-size: 20px;
+         font-weight: bold;
+         color: #fff;
+      }
+
+      &__icon {
+         font-size: 20px;
+         font-weight: bold;
+         color: #fff;
+         cursor: pointer;
+      }
+   }
+
+   &__description {
+      font-size: 16px;
+      color: #666666;
+      margin-bottom: 10px;
+
+   }
+
+   &__dueDate {
+      font-size: 14px;
+      color: #999999;
+   }
+
+   &__footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &__status {
+         font-size: 14px;
+         color: #999999;
+      }
+
+      &__actions {
+         display: flex;
+
+      }
+   }
+
+   &__button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      margin-left: 5px;
+      font-size: 14px;
+      color: #007bff;
+
+      &:hover {
+         text-decoration: underline;
+      }
+   }
+}

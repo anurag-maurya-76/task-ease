@@ -1,0 +1,32 @@
+# Use the official Maven image with JDK 17 as the base image for building
+FROM maven:3.8.4-openjdk-17 AS builder
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Maven project file
+COPY pom.xml .
+
+# Download and install Maven dependencies
+RUN mvn dependency:go-offline
+
+# Copy the application source code
+COPY src ./src
+
+# Build the application with Maven
+RUN mvn package -DskipTests
+
+# Use the official OpenJDK 17 image as the base image for running
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the packaged Spring Boot application JAR file into the container
+COPY --from=builder /app/target/backend-1.0.0-SNAPSHOT.jar todo.jar
+
+# Expose the port that the application runs on
+EXPOSE 8080
+
+# Define the command to run the application when the container starts
+CMD ["java", "-jar", "todo.jar"]

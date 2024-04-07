@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  database:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: todo
+      MYSQL_USER: anurag
+      MYSQL_PASSWORD: anurag123
+      MYSQL_ROOT_PASSWORD: root123
+    networks:
+      - backend_network
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/todo
+      SPRING_DATASOURCE_USERNAME: anurag
+      SPRING_DATASOURCE_PASSWORD: anurag123
+    networks:
+      - backend_network
+      - frontend_network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    networks:
+      - frontend_network
+    depends_on:
+      - backend
+
+networks:
+  frontend_network:
+  backend_network:
