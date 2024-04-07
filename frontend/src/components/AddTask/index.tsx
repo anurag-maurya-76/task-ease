@@ -7,6 +7,7 @@ import { taskService } from "../../services/taskService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import { queryClient } from "../../App";
+import toast from "react-hot-toast";
 const initialFormState = {
   name: {
     value: "",
@@ -76,7 +77,7 @@ const AddTask = () => {
       });
       return;
     }
-    await taskService.addTask({
+    const response = await taskService.addTask({
       name: formState.name.value,
       description: formState.desc.value,
       date: Date.now(),
@@ -85,9 +86,12 @@ const AddTask = () => {
       taskMapId: filter.taskMapId,
     });
 
-    queryClient.invalidateQueries();
-    handleFormDispatch(initialFormState);
-    setOpen(false);
+    if (response.error === false) {
+      toast.success(response.responseBody);
+      queryClient.invalidateQueries();
+      handleFormDispatch(initialFormState);
+      setOpen(false);
+    }
   };
 
   const [open, setOpen] = useState(false);

@@ -22,7 +22,9 @@ public enum ResponseCode {
     UPDATE_TASK_MAP_FAILED("Failed to update task map", 407),
     USER_UPDATE_FAILED("Failed to update user details", 408),
     LOGIN_FAILED("Login failed", 409),
-    INVALID_CREDENTIAL("Failed to validate user details", 410);
+    INVALID_CREDENTIAL("Failed to validate user details", 410),
+    TASK_MAP_ALREADY_PRESENT("Task map name already present", 411),
+    SERVICE_EXCEPTION("Internal Service Exception", 500);
     String message;
     Integer code;
 

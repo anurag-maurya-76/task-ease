@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Buffer } from "buffer";
+import { errorHandler } from "./errorHandler";
 
 const loginClient = axios.create({
   baseURL: "http://localhost:8080",
@@ -10,29 +11,38 @@ const loginClient = axios.create({
 });
 class LoginService {
   async login(payload: { email: string; password: string }) {
-    const base64encodedData = Buffer.from(
-      `${payload.email}:${payload.password}`
-    ).toString("base64");
-    const response = await loginClient.get(`/user`, {
-      withCredentials: true,
-      headers: {
-        Authorization: `Basic ${base64encodedData}`,
-      },
-    });
-    if (response.headers.authorization) {
-      window.sessionStorage.setItem(
-        "Authorization",
-        response.headers.authorization
-      );
+    try {
+      const response = await loginClient.get(`/user`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+            `${payload.email}:${payload.password}`
+          ).toString("base64")}`,
+        },
+      });
+      if (response.headers.authorization) {
+        window.sessionStorage.setItem(
+          "Authorization",
+          response.headers.authorization
+        );
+      }
+      return errorHandler(response);
+    } catch (e) {
+      return errorHandler(null);
     }
-    return response;
   }
-  register(payload: { email: string; password: string }) {
-    const response = loginClient.post(`/createUser`, {
-      password: payload.password,
-      email: payload.email,
-    });
-    return response;
+  async register(payload: { email: string; password: string }) {
+    try {
+      const response = await loginClient
+        .post(`/createUser`, {
+          password: payload.password,
+          email: payload.email,
+        })
+        .catch((error) => error);
+      return errorHandler(response);
+    } catch (e) {
+      return errorHandler(null);
+    }
   }
 }
 export const loginService = new LoginService();

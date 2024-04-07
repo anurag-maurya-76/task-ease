@@ -18,10 +18,10 @@ export const useFetchTaskMap = () => {
   );
 
   useEffect(() => {
-    if (data && isLoading === false) {
+    if (isLoading === false && data?.error === false) {
       if (filter.taskMapId === "") {
         dispatch(
-          filterAction.updateTaskMapId(data?.data?.responseBody[0]?.taskMapId)
+          filterAction.updateTaskMapId(data?.responseBody[0]?.taskMapId)
         );
       }
     }

@@ -10,16 +10,23 @@ export const useFetchTaskList = () => {
   const [taskList, setTaskList] = useState<Task[]>([]);
   const { data, isLoading } = useQuery<any>(
     ["getTask", filter],
-    async () => await taskService.getTask(filter),
+    async () => {
+      if (filter.taskMapId === "") {
+        return null;
+      } else {
+        const response = await taskService.getTaskList(filter);
+        return response;
+      }
+    },
     {
       cacheTime: 300000,
     }
   );
 
   useEffect(() => {
-    if (data) {
+    if (data?.error === false) {
       const taskList: Task[] = [];
-      data?.data?.responseBody?.map((value: any, key: number) => {
+      data?.responseBody?.map((value: any, key: number) => {
         const task: Task = {
           description: value.taskDescription,
           name: value.taskName,

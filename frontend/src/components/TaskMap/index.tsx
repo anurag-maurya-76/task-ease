@@ -12,6 +12,7 @@ import styles from "./TaskMap.module.scss";
 import { useState } from "react";
 import { taskMapService } from "../../services/taskMapService";
 import { queryClient } from "../../App";
+import toast from "react-hot-toast";
 
 const TaskMap = () => {
   const filter = useSelector((state: RootState) => state.filter);
@@ -24,8 +25,11 @@ const TaskMap = () => {
 
   const [taskName, setTaskName] = useState("");
   const handleAddTaskMap = async () => {
-    await taskMapService.addTaskMap(taskName);
-    queryClient.invalidateQueries();
+    const response = await taskMapService.addTaskMap(taskName);
+    if (response.error === false) {
+      toast.success(response.responseBody);
+      queryClient.invalidateQueries();
+    }
   };
   return (
     <div className={styles.taskMap}>
@@ -55,7 +59,7 @@ const TaskMap = () => {
         </div>
         <div className={styles.taskMap__list__title}>My List</div>
         {!isLoading &&
-          data.data.responseBody.map((taskMap: any, index: number) => {
+          data?.responseBody.map((taskMap: any, index: number) => {
             return (
               <motion.div
                 className={styles.taskMap__list__button}

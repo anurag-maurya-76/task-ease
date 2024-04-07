@@ -1,6 +1,7 @@
 import { axiosClient } from "../config/axios";
 import { Filter } from "../interface/filterInterface";
 import { Task } from "../interface/taskInterface";
+import { errorHandler } from "./errorHandler";
 
 class TaskService {
   async addTask(payload: Task) {
@@ -10,7 +11,7 @@ class TaskService {
       taskStatus: payload.status,
       taskMapId: payload.taskMapId,
     });
-    return response;
+    return errorHandler(response);
   }
   async updateTask(payload: Task) {
     const response = await axiosClient.post(`/updateTask/${payload.taskId}`, {
@@ -18,13 +19,13 @@ class TaskService {
       taskDescription: payload.description,
       taskStatus: payload.status,
     });
-    return response;
+    return errorHandler(response);
   }
-  async getTask(payload: Filter) {
+  async getTaskList(payload: Filter) {
     const response = await axiosClient.get(
       `/getTaskList/${payload.taskMapId}?sortBy=${payload.sortBy}&sortDir=${payload.sortDir}&searchBy=${payload.searchBy}&searchParameter=${payload.searchParamter}`
     );
-    return response;
+    return errorHandler(response);
   }
 }
 export const taskService = new TaskService();

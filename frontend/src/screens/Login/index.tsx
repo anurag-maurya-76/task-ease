@@ -3,6 +3,7 @@ import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
 import formStyles from "../../form.module.scss";
 import { loginService } from "../../services/loginService";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,23 +12,21 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const handleSubmit = async () => {
     if (mode === "Login") {
-      try {
-        const response = await loginService.login({
-          email,
-          password,
-        });
-        if (response.data.statusCode === 205) {
-          navigate("/dashboard");
-        }
-      } catch (e) {
-        console.log("Invalid user");
+      const response = await loginService.login({
+        email,
+        password,
+      });
+      if (response.error === false) {
+        toast.success(response.responseBody);
+        navigate("/dashboard");
       }
     } else if (mode === "Register") {
       const response = await loginService.register({
         email,
         password,
       });
-      if (response.data.statusCode === 203) {
+      if (response.error === false) {
+        toast.success(response.responseBody);
         setMode("Login");
       }
     }

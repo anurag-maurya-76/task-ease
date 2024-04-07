@@ -16,18 +16,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ToDoException.class)
     public ResponseEntity<ErrorResponse> handleTodoException(ToDoException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getResponseCode().getCode(), ex.getResponseCode().getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponse> handleAuthenticationException(UsernameNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ResponseCode.USER_NOT_FOUND.getCode(), ResponseCode.USER_NOT_FOUND.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialException(BadCredentialsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ResponseCode.INVALID_CREDENTIAL.getCode(), ResponseCode.INVALID_CREDENTIAL.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception ex) {
-
-        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.OK);
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ResponseCode.SERVICE_EXCEPTION.getCode(), ResponseCode.SERVICE_EXCEPTION.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
 }

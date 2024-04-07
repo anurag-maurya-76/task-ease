@@ -27,6 +27,12 @@ public class TaskMapServiceImpl implements TaskMapService {
         if (userDetails == null) {
             throw new ToDoException(ResponseCode.USER_NOT_FOUND);
         }
+        List<TaskMap> taskMapList = taskMapRepository.findByUserId(userDetails.getUserId());
+        for (TaskMap taskMap : taskMapList) {
+            if (taskMap.getTaskMapName().equals(taskMapRequest.getTaskMapName())) {
+                throw new ToDoException(ResponseCode.TASK_MAP_ALREADY_PRESENT);
+            }
+        }
         try {
             TaskMap taskMap = new TaskMap(taskMapRequest.getTaskMapName(), userDetails.getUserId(), new ArrayList<>());
             taskMapRepository.save(taskMap);

@@ -8,6 +8,7 @@ import {
 import { taskService } from "../../services/taskService";
 import { queryClient } from "../../App";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const TaskCard = ({ task }: { task: Task }) => {
   const [mode, setMode] = useState("view");
@@ -16,7 +17,7 @@ const TaskCard = ({ task }: { task: Task }) => {
     description: { value: "", error: "" },
   });
   const handleUpdateTask = async () => {
-    await taskService.updateTask({
+    const response = await taskService.updateTask({
       date: Date.now(),
       description: formState.description.value,
       name: formState.name.value,
@@ -24,11 +25,14 @@ const TaskCard = ({ task }: { task: Task }) => {
       taskId: task.taskId,
       taskMapId: task.taskMapId,
     });
-    handleChangeMode();
-    queryClient.invalidateQueries();
+    if (response.error === false) {
+      toast.success(response.responseBody);
+      handleChangeMode();
+      queryClient.invalidateQueries();
+    }
   };
   const handleMarkCompleted = async () => {
-    await taskService.updateTask({
+    const response = await taskService.updateTask({
       date: Date.now(),
       description: task.description,
       name: task.name,
@@ -36,7 +40,10 @@ const TaskCard = ({ task }: { task: Task }) => {
       taskId: task.taskId,
       taskMapId: task.taskMapId,
     });
-    queryClient.invalidateQueries();
+    if (response.error === false) {
+      toast.success(response.responseBody);
+      queryClient.invalidateQueries();
+    }
   };
 
   const handleChangeMode = () => {

@@ -42,7 +42,6 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                 grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            filterChain.doFilter(request, response);
             } catch (Exception e) {
                 response.setStatus(400);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -50,6 +49,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                 objectMapper.writeValue(response.getWriter(), errorResponse);
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     @Override

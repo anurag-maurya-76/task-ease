@@ -21,11 +21,14 @@ import static java.util.Map.entry;
 
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder().issuer("TODO").subject("JWT TOKEN").claims(Map.ofEntries(entry("username", authentication.getPrincipal()))).issuedAt(new Date()).expiration(new Date(new Date().getTime() + 30000000)).signWith(key).compact();
+            String jwt = Jwts.builder().issuer("TODO").subject("JWT TOKEN")
+                    .claims(Map.ofEntries(entry("username", authentication.getPrincipal()))).issuedAt(new Date())
+                    .expiration(new Date(new Date().getTime() + 30000000)).signWith(key).compact();
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
         }
         filterChain.doFilter(request, response);
